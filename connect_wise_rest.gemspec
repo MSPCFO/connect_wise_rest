@@ -10,8 +10,9 @@ Gem::Specification.new do |spec|
   spec.email         = ['kevin@kpheasey.com']
 
   spec.summary       = %q{REST client wrapper for Connect Wise.}
-  spec.description   = %q{REST client wrapper for Connect Wise.}
+  spec.description   = %q{A dead simple REST client wrapper for Connect Wise.}
   spec.homepage      = 'https://github.com/MSPCFO/connect_wise_rest'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
