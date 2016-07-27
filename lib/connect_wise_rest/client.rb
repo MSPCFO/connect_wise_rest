@@ -3,7 +3,7 @@ module ConnectWiseRest
 
     attr_accessor :options
 
-    attr_reader :data, :resource, :response
+    attr_reader :resource, :response
 
     DEFAULT_OPTIONS = {
         company_id: ConnectWiseRest.configuration.company_id,
@@ -17,6 +17,10 @@ module ConnectWiseRest
     def initialize(resource, options = {})
       @resource = resource
       @options = DEFAULT_OPTIONS.merge(options)
+    end
+
+    def data
+      @data || get
     end
 
     def get(query = {})
