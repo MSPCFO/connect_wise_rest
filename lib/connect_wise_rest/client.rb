@@ -2,8 +2,7 @@ module ConnectWiseRest
   class Client
 
     attr_accessor :options
-
-    attr_reader :resource, :response
+    attr_reader :resource
 
     DEFAULT_OPTIONS = {
         company_id: ConnectWiseRest.configuration.company_id,
@@ -11,6 +10,7 @@ module ConnectWiseRest
         private_key: ConnectWiseRest.configuration.private_key,
         url_prefix: ConnectWiseRest.configuration.url_prefix,
         version: ConnectWiseRest.configuration.version,
+        timeout: 300,
         query: { 'page' => 1, 'pageSize' => 75 }
     }
 
@@ -20,16 +20,29 @@ module ConnectWiseRest
     end
 
     def data
-      @data || get
+      @data || fetch
     end
 
-    def get(query = {})
+    def fetch(query = {})
       self.options[:query].merge!(query)
+
+      @response = nil
+      response
+
+      if response.response.is_a?(Net::HTTPInternalServerError)
+        raise "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
+      end
+
       @data = response.parsed_response
     end
 
     def response
-      @response = HTTParty.get(url, headers: { 'Accept' => 'application/json' }, query: self.options[:query])
+      @response ||= HTTParty.get(
+          url,
+          headers: { 'Accept' => 'application/json' },
+          query: self.options[:query],
+          timeout: options[:timeout]
+      )
     end
 
     def url
@@ -49,7 +62,7 @@ module ConnectWiseRest
 
     def next_page
       self.options[:query]['page'] += 1
-      return get
+      return fetch
     end
 
     def previous_page?
@@ -58,7 +71,7 @@ module ConnectWiseRest
 
     def previous_page
       self.options[:query]['page'] -= 1
-      return get
+      return fetch
     end
 
   end

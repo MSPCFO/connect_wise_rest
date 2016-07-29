@@ -1,3 +1,4 @@
+require 'net/http'
 require 'httparty'
 
 require 'connect_wise_rest/version'

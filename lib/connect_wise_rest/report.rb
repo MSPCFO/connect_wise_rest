@@ -9,9 +9,8 @@ module ConnectWiseRest
       @options = DEFAULT_OPTIONS.merge(options)
     end
 
-    def get(query = {})
-      self.options[:query].merge!(query)
-      @data = response.parsed_response
+    def fetch(query = {})
+      super
       format!
     end
 
