@@ -4,12 +4,15 @@ module ConnectWiseRest
     attr_accessor :options
     attr_reader :resource
 
-    DEFAULT_OPTIONS = ConnectWiseRest.configurations.merge(
-        {
-            timeout: 300,
-            query: { 'page' => 1, 'pageSize' => 75 }
-        }
-    )
+    DEFAULT_OPTIONS = {
+        company_id: ConnectWiseRest.configuration.company_id,
+        public_key: ConnectWiseRest.configuration.public_key,
+        private_key: ConnectWiseRest.configuration.private_key,
+        url_prefix: ConnectWiseRest.configuration.url_prefix,
+        version: ConnectWiseRest.configuration.version,
+        timeout: 300,
+        query: { 'page' => 1, 'pageSize' => 75 }
+    }
 
     def initialize(resource, options = {})
       @resource = resource
@@ -45,7 +48,7 @@ module ConnectWiseRest
     def url
       url = "https://#{options[:company_id]}+#{options[:public_key]}:#{options[:private_key]}"
       url += "@#{options[:url_prefix]}"
-      url += "/#{options[:code]}/apis/#{options[:version]}"
+      url += "/v4_6_release/apis/#{options[:api_version]}"
       url += resource
 
       return url
