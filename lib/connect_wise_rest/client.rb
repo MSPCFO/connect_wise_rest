@@ -4,7 +4,7 @@ module ConnectWiseRest
     attr_accessor :options
     attr_reader :resource
 
-    DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
+    DEFAULT_OPTIONS = ConnectWiseRest.configurations.merge(
         {
             timeout: 300,
             query: { 'page' => 1, 'pageSize' => 75 }
