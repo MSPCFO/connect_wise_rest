@@ -13,10 +13,11 @@ module ConnectWiseRest
   end
 
   class Configuration
-    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version
+    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :code
 
     def initialize
       @version = '3.0'
+      @code = 'v4_6_release'
     end
 
     def set(options = {})
