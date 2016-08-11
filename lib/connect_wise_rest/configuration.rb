@@ -23,6 +23,12 @@ module ConnectWiseRest
       options.each { |k, v| self.send("#{k.to_s}=", v) }
     end
 
+    def to_hash
+      hash = {}
+      instance_variables.each { |var| hash[var.to_s.delete('@').to_sym] = instance_variable_get(var) }
+      hash
+    end
+
   end
 
 end

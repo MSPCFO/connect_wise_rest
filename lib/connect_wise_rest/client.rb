@@ -4,15 +4,12 @@ module ConnectWiseRest
     attr_accessor :options
     attr_reader :resource
 
-    DEFAULT_OPTIONS = {
-        company_id: ConnectWiseRest.configuration.company_id,
-        public_key: ConnectWiseRest.configuration.public_key,
-        private_key: ConnectWiseRest.configuration.private_key,
-        url_prefix: ConnectWiseRest.configuration.url_prefix,
-        version: ConnectWiseRest.configuration.version,
-        timeout: 300,
-        query: { 'page' => 1, 'pageSize' => 75 }
-    }
+    DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
+        {
+            timeout: 300,
+            query: { 'page' => 1, 'pageSize' => 75 }
+        }
+    )
 
     def initialize(resource, options = {})
       @resource = resource
@@ -41,17 +38,16 @@ module ConnectWiseRest
           url,
           headers: { 'Accept' => 'application/json' },
           query: self.options[:query],
-          timeout: options[:timeout]
+          timeout: options[:timeout],
+          basic_auth: {
+              username: "#{options[:company_id]}+#{options[:public_key]}",
+              password: options[:private_key]
+          }
       )
     end
 
     def url
-      url = "https://#{options[:company_id]}+#{options[:public_key]}:#{options[:private_key]}"
-      url += "@#{options[:url_prefix]}"
-      url += "/v4_6_release/apis/#{options[:api_version]}"
-      url += resource
-
-      return url
+      "https://#{options[:url_prefix]}/v4_6_release/apis/#{options[:version]}#{resource}"
     end
 
     ### Pagination ###
