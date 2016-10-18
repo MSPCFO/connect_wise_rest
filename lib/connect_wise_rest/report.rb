@@ -5,7 +5,7 @@ module ConnectWiseRest
 
     def initialize(name, options = {})
       @name = name
-      @resource = 'system/reports/' + name
+      @resource = '/system/reports/' + name
       @options = DEFAULT_OPTIONS.merge(options)
     end
 
