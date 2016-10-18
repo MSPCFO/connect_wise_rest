@@ -34,8 +34,11 @@ module ConnectWiseRest
     end
 
     def response
-      @response ||= HTTParty.get(
-          url,
+      @response ||= HTTParty.get(url, request_options)
+    end
+
+    def request_options
+      request_options = {
           headers: { 'Accept' => 'application/json' },
           query: self.options[:query],
           timeout: options[:timeout],
@@ -43,7 +46,11 @@ module ConnectWiseRest
               username: "#{options[:company_id]}+#{options[:public_key]}",
               password: options[:private_key]
           }
-      )
+      }
+
+      request_options[:debug_output] = options[:logger] if options[:debug] && options[:logger]
+
+      request_options
     end
 
     def url
