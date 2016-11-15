@@ -1,15 +1,16 @@
 module ConnectWiseRest
-  class Report < Client
+  class Report < Request
 
     attr_reader :name
 
-    def initialize(name, options = {})
+    def initialize(name, options = {}, client = ConnectWiseRest.client)
+      super
+
       @name = name
       @resource = '/system/reports/' + name
-      @options = DEFAULT_OPTIONS.merge(options)
     end
 
-    def fetch(query = {})
+    def fetch
       super
       format!
     end

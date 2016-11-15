@@ -1,24 +1,23 @@
 module ConnectWiseRest
 
   class << self
-    attr_accessor :configuration
+    attr_accessor :config
   end
 
-  def self.configuration
-    @configuration ||= Configuration.new
+  def self.config
+    @config ||= Configuration.new
   end
 
   def self.configure
-    yield(configuration)
+    yield(config)
   end
 
   class Configuration
-    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :debug, :logger
+    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :debug
 
     def initialize
       @version = '3.0'
       @debug = false
-      @logger = $stdout
     end
 
     def set(options = {})
