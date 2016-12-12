@@ -16,20 +16,25 @@ module ConnectWiseRest
     end
 
     def format!
-      rows = []
+      if @data['row_values'].is_a?(Array)
+        rows = []
 
-      @data['row_values'].each do |values|
-        row = {}
+        @data['row_values'].each do |values|
+          row = {}
 
-        values.each_with_index do |value, index|
-          key = @data['column_definitions'][index].keys[0]
-          row[key] = value
+          values.each_with_index do |value, index|
+            key = @data['column_definitions'][index].keys[0]
+            row[key] = value
+          end
+
+          rows << row
         end
 
-        rows << row
-      end
+        @data = rows
 
-      @data = rows
+      else
+        @data = []
+      end
     end
 
   end
