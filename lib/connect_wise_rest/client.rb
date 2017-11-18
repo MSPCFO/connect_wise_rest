@@ -60,7 +60,7 @@ module ConnectWiseRest
     ### Pagination ###
 
     def next_page?
-      self.data.is_a?(Array) && self.data.count == self.options[:query]['pageSize']
+      self.data.is_a?(Array) && self.data.count >= self.options[:query]['pageSize']
     end
 
     def next_page
