@@ -22,11 +22,9 @@ module ConnectWiseRest
 
     def fetch(query = {})
       self.options[:query].merge!(query)
-
       @response = nil
-      response
 
-      if response.response.is_a?(Net::HTTPInternalServerError)
+      unless response.success?
         raise "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
       end
 
