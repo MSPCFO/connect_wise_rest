@@ -24,9 +24,7 @@ module ConnectWiseRest
       self.options[:query].merge!(query)
       @response = nil
 
-      unless response.success?
-        raise "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
-      end
+      raise_error(response) unless response.success?
 
       @data = response.parsed_response
     end
@@ -75,5 +73,14 @@ module ConnectWiseRest
       return fetch
     end
 
+    private
+
+      def raise_error(response)
+        if response.parsed_response
+          raise "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
+        else
+          raise response.body
+        end
+      end
   end
 end
