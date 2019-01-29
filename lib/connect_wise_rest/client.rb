@@ -6,8 +6,9 @@ module ConnectWiseRest
 
     DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
       {
-        timeout: 300,
-        query: { 'page' => 1, 'pageSize' => 75 }
+        headers: {},
+        query: { 'page' => 1, 'pageSize' => 75 },
+        timeout: 300
       }
     )
 
@@ -37,7 +38,7 @@ module ConnectWiseRest
 
     def request_options
       request_options = {
-        headers: { 'Accept' => 'application/json' },
+        headers: { 'Accept' => 'application/json' }.merge(options[:headers]),
         query: self.options[:query],
         timeout: options[:timeout],
         basic_auth: {
