@@ -5,10 +5,10 @@ module ConnectWiseRest
     attr_reader :resource
 
     DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
-        {
-            timeout: 300,
-            query: { 'page' => 1, 'pageSize' => 75 }
-        }
+      {
+        timeout: 300,
+        query: { 'page' => 1, 'pageSize' => 75 }
+      }
     )
 
     def initialize(resource, options = {})
@@ -31,17 +31,19 @@ module ConnectWiseRest
 
     def response
       @response ||= HTTParty.get(url, request_options)
+    rescue StandardError => e
+      raise ConnectionError.new(e.message)
     end
 
     def request_options
       request_options = {
-          headers: { 'Accept' => 'application/json' },
-          query: self.options[:query],
-          timeout: options[:timeout],
-          basic_auth: {
-              username: "#{options[:company_id]}+#{options[:public_key]}",
-              password: options[:private_key]
-          }
+        headers: { 'Accept' => 'application/json' },
+        query: self.options[:query],
+        timeout: options[:timeout],
+        basic_auth: {
+          username: "#{options[:company_id]}+#{options[:public_key]}",
+          password: options[:private_key]
+        }
       }
 
       request_options[:debug_output] = options[:logger] if options[:debug] && options[:logger]
@@ -76,11 +78,13 @@ module ConnectWiseRest
     private
 
       def raise_error(response)
-        if response.parsed_response
-          raise "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
-        else
-          raise response.body
-        end
+        msg = if response.parsed_response
+                "#{response.parsed_response['code']}: #{response.parsed_response['message']}"
+              else
+                response.body
+              end
+
+        raise ConnectionError.new(msg)
       end
   end
 end

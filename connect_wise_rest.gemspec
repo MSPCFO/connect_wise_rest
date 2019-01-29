@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'connect_wise_rest'
   spec.version       = ConnectWiseRest::VERSION
   spec.authors       = ['Kevin Pheasey']
-  spec.email         = ['kevin@kpheasey.com']
+  spec.email         = ['kevin@kpsoftware.io']
 
   spec.summary       = %q{REST client wrapper for Connect Wise.}
   spec.description   = %q{A dead simple REST client wrapper for Connect Wise.}
