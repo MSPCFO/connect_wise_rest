@@ -15,7 +15,7 @@ module ConnectWiseRest
     end
 
     def format!
-      if @data['row_values'].is_a?(Array)
+      if @data && @data['row_values'].is_a?(Array)
         rows = []
 
         @data['row_values'].each do |values|
