@@ -13,7 +13,8 @@ module ConnectWiseRest
   end
 
   class Configuration
-    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :debug, :logger
+    attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :debug, :logger,
+                  :proxy_host, :proxy_port, :proxy_user, :proxy_password
 
     def initialize
       @version = '3.0'
@@ -30,7 +31,5 @@ module ConnectWiseRest
       instance_variables.each { |var| hash[var.to_s.delete('@').to_sym] = instance_variable_get(var) }
       hash
     end
-
   end
-
 end

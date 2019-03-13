@@ -47,7 +47,18 @@ module ConnectWiseRest
         }
       }
 
-      request_options[:debug_output] = options[:logger] if options[:debug] && options[:logger]
+      if options[:proxy_host]
+        request_options.merge!(
+          http_proxyaddr: options[:proxy_host],
+          http_proxyport: options[:proxy_port],
+          http_proxyuser: options[:proxy_user],
+          http_proxypass: options[:proxy_password],
+        )
+      end
+
+      if options[:debug] && options[:logger]
+        request_options[:debug_output] = options[:logger]
+      end
 
       request_options
     end
