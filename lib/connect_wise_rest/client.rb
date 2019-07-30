@@ -8,7 +8,8 @@ module ConnectWiseRest
       {
         headers: {},
         query: { 'page' => 1, 'pageSize' => 75 },
-        timeout: 300
+        timeout: 300,
+        request_options: {}
       }
     )
 
@@ -37,7 +38,9 @@ module ConnectWiseRest
     end
 
     def request_options
-      request_options = {
+      request_options = options[:request_options] || {}
+
+      request_options.merge!(
         headers: { 'Accept' => 'application/json' }.merge(options[:headers]),
         query: self.options[:query],
         timeout: options[:timeout],
@@ -45,7 +48,7 @@ module ConnectWiseRest
           username: "#{options[:company_id]}+#{options[:public_key]}",
           password: options[:private_key]
         }
-      }
+      )
 
       if options[:proxy_host]
         request_options.merge!(

@@ -14,7 +14,7 @@ module ConnectWiseRest
 
   class Configuration
     attr_accessor :company_id, :private_key, :public_key, :url_prefix, :version, :debug, :logger,
-                  :proxy_host, :proxy_port, :proxy_user, :proxy_password
+                  :proxy_host, :proxy_port, :proxy_user, :proxy_password, :request_options
 
     def initialize
       @version = '3.0'
