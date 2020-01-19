@@ -78,6 +78,8 @@ module ConnectWiseRest
 
     def next_page
       self.options[:query]['page'] += 1
+      self.options[:query]['pageId'] = page_id
+
       return fetch
     end
 
@@ -88,6 +90,13 @@ module ConnectWiseRest
     def previous_page
       self.options[:query]['page'] -= 1
       return fetch
+    end
+
+    def page_id
+      pp response.headers
+      url = URI.parse(response.headers['Link'])
+      params = CGI.parse(url.query)
+      params['pageId']
     end
 
     private
