@@ -93,10 +93,15 @@ module ConnectWiseRest
     end
 
     def page_id
-      pp response.headers
-      url = URI.parse(response.headers['Link'])
+      puts "Checking for page id in the following response headers:"
+      puts response.headers['link']
+
+      link = response.headers['link'].first.split(';').first[1..-2]
+      url = URI.parse(link)
       params = CGI.parse(url.query)
       params['pageId']
+    rescue
+      nil
     end
 
     private
