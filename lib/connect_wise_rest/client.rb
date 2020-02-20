@@ -7,7 +7,7 @@ module ConnectWiseRest
     DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
       {
         headers: {},
-        query: { 'page' => 1, 'pageSize' => 75 },
+        query: {},
         timeout: 300,
         request_options: {}
       }
@@ -93,13 +93,10 @@ module ConnectWiseRest
     end
 
     def page_id
-      puts "Checking for page id in the following response headers:"
-      puts response.headers['link']
-
-      link = response.headers['link'].first.split(';').first[1..-2]
+      link = response.headers['link'].split(';').first[1..-2]
       url = URI.parse(link)
       params = CGI.parse(url.query)
-      params['pageId']
+      params['pageId'].first
     rescue
       nil
     end
