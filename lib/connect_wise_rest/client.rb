@@ -7,7 +7,7 @@ module ConnectWiseRest
     DEFAULT_OPTIONS = ConnectWiseRest.configuration.to_hash.merge(
       {
         headers: {},
-        query: {},
+        query: { 'page' => 1, 'pageSize' => 75 },
         timeout: 300,
         request_options: {}
       }
@@ -78,8 +78,6 @@ module ConnectWiseRest
 
     def next_page
       self.options[:query]['page'] += 1
-      self.options[:query]['pageId'] = page_id
-
       return fetch
     end
 
@@ -90,15 +88,6 @@ module ConnectWiseRest
     def previous_page
       self.options[:query]['page'] -= 1
       return fetch
-    end
-
-    def page_id
-      link = response.headers['link'].split(';').first[1..-2]
-      url = URI.parse(link)
-      params = CGI.parse(url.query)
-      params['pageId'].first
-    rescue
-      nil
     end
 
     private

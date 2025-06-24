@@ -1,4 +1,3 @@
-require 'cgi'
 require 'net/http'
 require 'httparty'
 
